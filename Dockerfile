@@ -28,7 +28,7 @@ COPY --from=builder /app/public /usr/share/nginx/html
 ENV YACD_DEFAULT_BACKEND "http://127.0.0.1:9090"
 
 # Clash stage
-#FROM --platform=$TARGETPLATFORM dreamacro/clash:dev AS clash
+COPY --from=dreamacro/clash:dev /clash /clash
 
 ADD docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
