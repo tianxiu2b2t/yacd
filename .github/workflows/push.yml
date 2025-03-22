@@ -56,20 +56,6 @@ jobs:
           release_name: ${{ github.ref }}
           draft: true
           prerelease: false
-      - name: Create Tar Ball
-        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
-        run: tar cJf yacd.tar.xz public
-      - name: Upload Release Asset
-        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./yacd.tar.xz
-          asset_name: yacd.tar.xz
-          asset_content_type: application/x-gzip
 
   docker:
     needs: install
