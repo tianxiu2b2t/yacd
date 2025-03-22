@@ -15,7 +15,7 @@ RUN pnpm build \
   && rm public/*.map || true
 
 # Nginx stage
-FROM --platform=$TARGETPLATFORM alpine
+FROM --platform=$TARGETPLATFORM alpine AS nginx
 # the brotli module is only in the alpine *edge* repo
 RUN apk add --no-cache \
   nginx \
@@ -28,7 +28,7 @@ COPY --from=builder /app/public /usr/share/nginx/html
 ENV YACD_DEFAULT_BACKEND "http://127.0.0.1:9090"
 
 # Clash stage
-FROM --platform=$TARGETPLATFORM dreamacro/clash:dev
+FROM --platform=$TARGETPLATFORM dreamacro/clash:dev AS clash
 
 ADD docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
