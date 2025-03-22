@@ -71,31 +71,6 @@ jobs:
           asset_name: yacd.tar.xz
           asset_content_type: application/x-gzip
 
-      - name: Push to gh-pages
-        if: github.event_name == 'push' && (startsWith(github.event.ref, 'refs/tags/') || github.event.ref == 'refs/heads/publish')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_DIR: public
-          BRANCH: gh-pages
-        run: |
-          cd $PUBLISH_DIR
-          ls -l
-          git init
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@noreply.github.com"
-          touch .nojekyll
-          git add .
-          git status
-          git commit -m "Push to gh-pages"
-          git push -f https://$GITHUB_ACTOR:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:$BRANCH
-
-      - name: Send Notification
-        uses: haishanh/actions-telegram-notification@v1
-        if: ${{ always() }}
-        with:
-          notification-token: ${{ secrets.TG_NOTIFICATION_TOKEN }}
-          job-status: ${{ job.status }}
-
   docker:
     needs: install
     runs-on: ubuntu-latest
@@ -119,7 +94,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v5
         with:
-          images: haishanh/yacd
+          images: atianxiua/yacd
 
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v1.2.0
@@ -165,10 +140,3 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-
-      - name: Send Notification
-        uses: haishanh/actions-telegram-notification@v1
-        if: ${{ always() }}
-        with:
-          notification-token: ${{ secrets.TG_NOTIFICATION_TOKEN }}
-          job-status: ${{ job.status }}
