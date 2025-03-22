@@ -24,5 +24,8 @@ COPY docker/nginx-default.conf /etc/nginx/http.d/default.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/public /usr/share/nginx/html
 ENV YACD_DEFAULT_BACKEND "http://127.0.0.1:9090"
+
+FROM --platform=$TARGETPLATFORM dreamacro/clash:dev
+
 ADD docker-entrypoint.sh /
 CMD ["/docker-entrypoint.sh"]
