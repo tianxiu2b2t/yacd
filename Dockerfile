@@ -15,7 +15,7 @@ RUN pnpm build \
   && rm public/*.map || true
 
 # Nginx stage
-FROM --platform=$TARGETPLATFORM alpine AS nginx
+# FROM --platform=$TARGETPLATFORM alpine AS nginx
 # the brotli module is only in the alpine *edge* repo
 RUN apk add --no-cache \
   nginx \
