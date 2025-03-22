@@ -19,7 +19,7 @@ export function useUpdateRuleProviderItem(
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(refreshRuleProviderByName, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['/providers/rules']);
+      queryClient.invalidateQueries(['/rules']);
     },
   });
   const onClickRefreshButton = (ev: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +36,7 @@ export function useUpdateAllRuleProviderItems(
   const { data: provider } = useRuleProviderQuery(apiConfig);
   const { mutate, isLoading } = useMutation(updateRuleProviders, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['/providers/rules']);
+      queryClient.invalidateQueries(['/rules']);
     },
   });
   const onClickRefreshButton = (ev: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,12 +50,12 @@ export function useInvalidateQueries() {
   const queryClient = useQueryClient();
   return useCallback(() => {
     queryClient.invalidateQueries(['/rules']);
-    queryClient.invalidateQueries(['/providers/rules']);
+    queryClient.invalidateQueries(['/rules']);
   }, [queryClient]);
 }
 
 export function useRuleProviderQuery(apiConfig: ClashAPIConfig) {
-  return useQuery(['/providers/rules', apiConfig], fetchRuleProviders);
+  return useQuery(['/rules', apiConfig], fetchRuleProviders);
 }
 
 export function useRuleAndProvider(apiConfig: ClashAPIConfig) {
